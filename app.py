@@ -1,8 +1,10 @@
 import json
 
+from flask_cors import CORS
 from flask import Flask, render_template, request , jsonify
 
 app = Flask(__name__)
+CORS(app) 
 JSON_FILE = 'todo.json'
 
 @app.route("/")

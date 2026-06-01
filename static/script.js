@@ -14,6 +14,7 @@ todoForm.addEventListener("submit", (e) => {
   const newTodo = {
     title: titleInput.value,
     desc: descInput.value,
+    date: new Date().toDateString()
   };
 
   if (editIndex !== null) {
@@ -41,10 +42,12 @@ function DisplayTable() {
             <th scope="row">${index + 1}</th>
             <td>${todo.title}</td>
             <td>${todo.desc}</td>
-            <td>${new Date().toDateString()}</td>
+            <td>${todo.date}</td>
             <td>
+            <div class="d-flex flex-row gap-2 align-items-center">
                 <button class="btn btn-danger btn-sm" onclick="deleteTodo(${index})">DELETE</button>
                 <button class="btn btn-warning btn-sm" onclick="editTodo(${index})">EDIT</button>
+            </div>
             </td>
             `;
     todoTableBody.appendChild(row);
