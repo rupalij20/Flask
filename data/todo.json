@@ -8,20 +8,5 @@
         "id": 2,
         "title": "Fish",
         "desc": "Feed the fish at 9 o'clock."
-    },
-    {
-        "id": 3,
-        "title": "Study",
-        "desc": "Complete CJ assignment."
-    },
-    {
-        "id": 4,
-        "title": "Fish",
-        "desc": "Feed the fish at 9 o'cloc"
-    },
-    {
-        "id": 5,
-        "title": "Fish",
-        "desc": "Feed the fish at 9 o'clock"
     }
 ]
