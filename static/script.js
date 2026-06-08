@@ -16,15 +16,13 @@ todoForm.addEventListener("submit", (e) => {
     };
 
     if (editIndex !== null) {
-        // Extract the absolute database ID stored with this todo item
+        
         const dbId = todos[editIndex].id;
         
-        // Update local memory and preserve its id
         todos[editIndex] = { ...todoData, id: dbId };
         localStorage.setItem("todos", JSON.stringify(todos));
         DisplayTable();
-        
-        // Sync update with database
+           
         updateTodoInSQL(dbId, todoData);
         editIndex = null;
     } else {
@@ -120,7 +118,6 @@ function updateTodoInSQL(dbId, todoData) {
         .catch(err => console.error("Failed to update backend server:", err));
 }
 
-// Initial render
 DisplayTable();
 
 
