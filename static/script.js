@@ -7,9 +7,9 @@ let editIndex = null;
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 todoForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+    e.preventDefault();       // stops the webpage from reloading
     
-    const todoData = {
+    const todoData = {      //create object to hold current task
         title: titleInput.value,
         desc: descInput.value,
         date: new Date().toDateString()
@@ -25,7 +25,7 @@ todoForm.addEventListener("submit", (e) => {
         DisplayTable();
         
         // Sync update with database
-        updateTodoInSQL(dbId, todoData);
+        updateTodoInMongoDB(dbId, todoData);
         editIndex = null;
     } else {
         // Create new todo item via database first
@@ -56,7 +56,7 @@ function DisplayTable() {
 }
 
 function addTodo(todoData) {
-    const options = {
+    const options = {                //sets the config req for sending web req
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todoData)
@@ -80,11 +80,6 @@ function addTodo(todoData) {
 
 function deleteTodo(index) {
     const dbId = todos[index].id;
-    
-    if (!dbId) {
-        console.error("Action denied: This entry doesn't have an SQL table primary ID.");
-        return;
-    }
 
     todos.splice(index, 1);
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -92,8 +87,8 @@ function deleteTodo(index) {
 
     fetch(`http://localhost:5000/todo/${dbId}`, { method: 'DELETE' })
         .then(res => res.json())
-        .then(data => console.log("Deleted from SQL:", data))
-        .catch(err => console.error("SQL delete error:", err));
+        .then(data => console.log("Deleted from MongoDB:", data))
+        .catch(err => console.error("MongoDB delete error:", err));
 }
 
 function editTodo(index) {
@@ -102,11 +97,7 @@ function editTodo(index) {
     editIndex = index;
 }
 
-function updateTodoInSQL(dbId, todoData) {
-    if (!dbId) {
-        console.error("Action denied: Missing SQL entry primary ID.");
-        return;
-    }
+function updateTodoInMongoDB(dbId, todoData) {            //when editing is over and click submit this function triggers.It sends the put req to backend and replace old data to new in mongoDB
 
     const options = {
         method: 'PUT',
@@ -116,11 +107,10 @@ function updateTodoInSQL(dbId, todoData) {
 
     fetch(`http://localhost:5000/todo/${dbId}`, options)
         .then(response => response.json())
-        .then(serverData => console.log("SQL updated data:", serverData))
         .catch(err => console.error("Failed to update backend server:", err));
 }
 
-// Initial render
+
 DisplayTable();
 
 
