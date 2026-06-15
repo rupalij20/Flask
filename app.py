@@ -5,7 +5,7 @@ from datetime import datetime , timezone
 from bson.objectid import ObjectId   #(bson) is a mongoDB library used to covert IDS into special format
 from flask_cors import CORS   # It stops security when separate from frontend and we try to visit backend
 from flask import Flask, render_template, request, jsonify    
-from sql_connection import get_connection  # It is initialize and manage your SQL connection
+# from sql_connection import get_connection  # It is initialize and manage your SQL connection
 
 app = Flask(__name__)
 CORS(app)
