@@ -55,28 +55,34 @@ function DisplayTable() {
     });
 }
 
-function addTodo(todoData) {
-    const options = {                //sets the config req for sending web req
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(todoData)
-    };
-
-    fetch('https://my-flask-todo-15eu.onrender.com', options)
-        .then(response => response.json())
-        .then(serverData => {
-            if (serverData.status === "success") {
-                // Read the database generated ID sent by the fixed server response
-                todoData.id = serverData.id ;
-                todos.push(todoData);
-                localStorage.setItem("todos", JSON.stringify(todos));
-                DisplayTable();
-            } else {
-                console.error("Server validation failed:", serverData.message);
+async function addTodo(todoData) {
+    try {
+        const response = await fetch(
+            "https://onrender.com", // Added /todo here
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(todoData)
             }
-        })
-        .catch(err => console.error("Failed to sync with backend server:", err));
+        );
+
+        const serverData = await response.json();
+
+        if (response.ok && serverData.status === "success") {
+            todoData.id = serverData.id;
+            todos.push(todoData);
+            localStorage.setItem("todos", JSON.stringify(todos));
+            DisplayTable();
+        } else {
+            console.error(serverData.message);
+        }
+    } catch (err) {
+        console.error("Failed to sync with backend:", err);
+    }
 }
+
 
 function deleteTodo(index) {
     const dbId = todos[index].id;
@@ -85,11 +91,13 @@ function deleteTodo(index) {
     localStorage.setItem("todos", JSON.stringify(todos));
     DisplayTable();
 
-    fetch(`https://my-flask-todo-15eu.onrender.com/${dbId}`, { method: 'DELETE' })
+    // Added /todo/ into the string interpolation layout below
+    fetch(`https://onrender.com{dbId}`, { method: 'DELETE' })
         .then(res => res.json())
         .then(data => console.log("Deleted from MongoDB:", data))
         .catch(err => console.error("MongoDB delete error:", err));
 }
+
 
 function editTodo(index) {
     titleInput.value = todos[index].title;
@@ -97,18 +105,19 @@ function editTodo(index) {
     editIndex = index;
 }
 
-function updateTodoInMongoDB(dbId, todoData) {            //when editing is over and click submit this function triggers.It sends the put req to backend and replace old data to new in mongoDB
-
+function updateTodoInMongoDB(dbId, todoData) {
     const options = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todoData)
     };
 
-    fetch(`https://my-flask-todo-15eu.onrender.com/${dbId}`, options)
+    // Added /todo/ into the string interpolation layout below
+    fetch(`https://onrender.com{dbId}`, options)
         .then(response => response.json())
         .catch(err => console.error("Failed to update backend server:", err));
 }
+
 
 
 DisplayTable();
