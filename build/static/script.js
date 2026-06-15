@@ -67,7 +67,7 @@ function addTodo(todoData) {
         .then(serverData => {
             if (serverData.status === "success") {
                 // Read the database generated ID sent by the fixed server response
-                todoData.id = serverData.id;
+                todoData.id = serverData.id ;
                 todos.push(todoData);
                 localStorage.setItem("todos", JSON.stringify(todos));
                 DisplayTable();

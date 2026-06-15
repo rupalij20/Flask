@@ -62,12 +62,12 @@ function addTodo(todoData) {
         body: JSON.stringify(todoData)
     };
 
-    fetch('https://my-flask-todo-15eu.onrender.com', options)
+    fetch('https://onrender.com', options)
         .then(response => response.json())
         .then(serverData => {
             if (serverData.status === "success") {
                 // Read the database generated ID sent by the fixed server response
-                todoData.id = serverData.id;
+                todoData.id = serverData.id ;
                 todos.push(todoData);
                 localStorage.setItem("todos", JSON.stringify(todos));
                 DisplayTable();
@@ -85,7 +85,7 @@ function deleteTodo(index) {
     localStorage.setItem("todos", JSON.stringify(todos));
     DisplayTable();
 
-    fetch(`https://my-flask-todo-15eu.onrender.com/${dbId}`, { method: 'DELETE' })
+    fetch(`https://onrender.com/${dbId}`, { method: 'DELETE' })
         .then(res => res.json())
         .then(data => console.log("Deleted from MongoDB:", data))
         .catch(err => console.error("MongoDB delete error:", err));
@@ -105,7 +105,7 @@ function updateTodoInMongoDB(dbId, todoData) {            //when editing is over
         body: JSON.stringify(todoData)
     };
 
-    fetch(`https://my-flask-todo-15eu.onrender.com/${dbId}`, options)
+    fetch(`https://onrender.com/${dbId}`, options)
         .then(response => response.json())
         .catch(err => console.error("Failed to update backend server:", err));
 }
