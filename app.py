@@ -13,7 +13,12 @@ date = datetime.now(timezone.utc)
 
 todos = []
 
-myclient = MongoClient('mongodb+srv://rupalij_db_user:rupali2026@cluster0.81fdwl0.mongodb.net/',tlsCAFile=certifi.where())    #It tells database where to find security certificate on your computer
+# Try standard secure TLS configuration first
+myclient = MongoClient(
+    'mongodb+srv://rupalij_db_user:rupali2026@cluster0.81fdwl0.mongodb.net/?retryWrites=true&w=majority',
+    tls=True
+)
+   #It tells database where to find security certificate on your computer
 
 mydb = myclient['Todo_db']  #create DB
 mycol = mydb['Todos']  #create collection
