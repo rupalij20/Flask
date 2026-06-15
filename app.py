@@ -13,10 +13,11 @@ date = datetime.now(timezone.utc)
 
 todos = []
 
-# Try standard secure TLS configuration first
+# Replace your current MongoClient line with this exact block
 myclient = MongoClient(
-    'mongodb+srv://rupalij_db_user:rupali2026@cluster0.81fdwl0.mongodb.net/?retryWrites=true&w=majority',
-    tls=True
+    'mongodb://rupalij_db_user:rupali2026@ac-cpcdrqx-shard-00-00.81fdwl0.mongodb.net:27017,ac-cpcdrqx-shard-00-01.81fdwl0.mongodb.net:27017,ac-cpcdrqx-shard-00-02.81fdwl0.mongodb.net:27017/Todo_db?ssl=true&replicaSet=atlas-m1u6w6-shard-0&authSource=admin&retryWrites=true&w=majority',
+    tls=True,
+    tlsAllowInvalidCertificates=True
 )
    #It tells database where to find security certificate on your computer
 
