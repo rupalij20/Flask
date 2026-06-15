@@ -4,6 +4,9 @@ const titleInput = document.getElementById("title");
 const descInput = document.getElementById("desc");
 let editIndex = null;
 
+// Your precise backend URL definition
+const BACKEND_URL = "https://my-flask-todo-15eu.onrender.com";
+
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 todoForm.addEventListener("submit", (e) => {
@@ -58,7 +61,7 @@ function DisplayTable() {
 async function addTodo(todoData) {
     try {
         const response = await fetch(
-            "https://onrender.com", // Added /todo here
+            `${BACKEND_URL}/todo`, 
             {
                 method: "POST",
                 headers: {
@@ -83,7 +86,6 @@ async function addTodo(todoData) {
     }
 }
 
-
 function deleteTodo(index) {
     const dbId = todos[index].id;
 
@@ -91,13 +93,11 @@ function deleteTodo(index) {
     localStorage.setItem("todos", JSON.stringify(todos));
     DisplayTable();
 
-    // Added /todo/ into the string interpolation layout below
-    fetch(`https://onrender.com{dbId}`, { method: 'DELETE' })
+    fetch(`${BACKEND_URL}/todo/${dbId}`, { method: 'DELETE' })
         .then(res => res.json())
         .then(data => console.log("Deleted from MongoDB:", data))
         .catch(err => console.error("MongoDB delete error:", err));
 }
-
 
 function editTodo(index) {
     titleInput.value = todos[index].title;
@@ -112,17 +112,9 @@ function updateTodoInMongoDB(dbId, todoData) {
         body: JSON.stringify(todoData)
     };
 
-    // Added /todo/ into the string interpolation layout below
-    fetch(`https://onrender.com{dbId}`, options)
+    fetch(`${BACKEND_URL}/todo/${dbId}`, options)
         .then(response => response.json())
         .catch(err => console.error("Failed to update backend server:", err));
 }
 
-
-
 DisplayTable();
-
-
-
-
-
