@@ -1,4 +1,5 @@
 import json , os
+import ssl
 import certifi     #It verify the identity of your website
 from pymongo import MongoClient
 from datetime import datetime , timezone
