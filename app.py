@@ -14,13 +14,12 @@ date = datetime.now(timezone.utc)
 
 todos = []
 
-# Replace your current MongoClient line with this exact block
+# Replace your current myclient block in app.py with this:
 myclient = MongoClient(
-    'mongodb://rupalij_db_user:rupali2026@ac-cpcdrqx-shard-00-00.81fdwl0.mongodb.net:27017,ac-cpcdrqx-shard-00-01.81fdwl0.mongodb.net:27017,ac-cpcdrqx-shard-00-02.81fdwl0.mongodb.net:27017/Todo_db?ssl=true&replicaSet=atlas-m1u6w6-shard-0&authSource=admin&retryWrites=true&w=majority',
+    'mongodb+srv://rupalij_db_user:rupali2026@ac-cpcdrqx-shard-00-00.81fdwl0.mongodb.net/Todo_db?retryWrites=true&w=majority',
     tls=True,
-    tlsAllowInvalidCertificates=True
-)
-   #It tells database where to find security certificate on your computer
+    tlsCAFile=certifi.where()  # Uses the certifi library you already imported
+)                                                                 #It tells database where to find security certificate on your computer
 
 mydb = myclient['Todo_db']  #create DB
 mycol = mydb['Todos']  #create collection

@@ -61,7 +61,7 @@ function DisplayTable() {
 async function addTodo(todoData) {
     try {
         const response = await fetch(
-            `${BACKEND_URL}/todo`, 
+            `${BACKEND_URL}/todo`, // <-- Double check this has "/todo" at the end
             {
                 method: "POST",
                 headers: {
@@ -70,6 +70,7 @@ async function addTodo(todoData) {
                 body: JSON.stringify(todoData)
             }
         );
+
 
         const serverData = await response.json();
 
@@ -87,17 +88,21 @@ async function addTodo(todoData) {
 }
 
 function deleteTodo(index) {
+    // 1. Get the correct ID first while the index matches perfectly
     const dbId = todos[index].id;
 
+    // 2. Then remove it from your local storage array
     todos.splice(index, 1);
     localStorage.setItem("todos", JSON.stringify(todos));
     DisplayTable();
 
+    // 3. Fire the request
     fetch(`${BACKEND_URL}/todo/${dbId}`, { method: 'DELETE' })
         .then(res => res.json())
         .then(data => console.log("Deleted from MongoDB:", data))
         .catch(err => console.error("MongoDB delete error:", err));
 }
+
 
 function editTodo(index) {
     titleInput.value = todos[index].title;
