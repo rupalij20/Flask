@@ -7,15 +7,15 @@ let editIndex = null;
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 todoForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+    e.preventDefault();     //stop the webpage from reloading
     
-    const todoData = {
+    const todoData = {         // create a object to hold current task
         title: titleInput.value,
         desc: descInput.value,
         date: new Date().toDateString()
     };
 
-    if (editIndex !== null) {
+    if (editIndex !== null) {        //It is for checking if you changing the old task or adding new.
         
         const dbId = todos[editIndex].id;
         
@@ -23,21 +23,21 @@ todoForm.addEventListener("submit", (e) => {
         localStorage.setItem("todos", JSON.stringify(todos));
         DisplayTable();
            
-        updateTodoInMongoDB(dbId, todoData);
+        updateTodoInMongoDB(dbId, todoData);    //It sends req to update task in your backend.
         editIndex = null;
     } else {
-        // Create new todo item via database first
-        addTodo(todoData);
+       
+        addTodo(todoData);    // Create new todo item via database first
     }
     
-    todoForm.reset();
+    todoForm.reset();    //reset empty field 
 });
 
 function DisplayTable() {
     todoTableBody.innerHTML = "";
     todos.forEach((todo, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
+        const row = document.createElement("tr");     //create HTML <tr> item.
+        row.innerHTML = `                 
             <th scope="row">${index + 1}</th>
             <td>${todo.title}</td>
             <td>${todo.desc}</td>
@@ -48,26 +48,26 @@ function DisplayTable() {
                     <button class="btn btn-warning btn-sm" onclick="editTodo(${index})">EDIT</button>
                 </div>
             </td>
-        `;
+        `;            //sends dynamic data directly into row using backticks. 
         todoTableBody.appendChild(row);
     });
 }
 
 function addTodo(todoData) {
-    const options = {
+    const options = {         //config rule.
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todoData)
     };
 
-    fetch('https://my-flask-todo-15eu.onrender.com/todo', options)
-        .then(response => response.json())
-        .then(serverData => {
+    fetch('https://my-flask-todo-15eu.onrender.com/todo', options)      //sends req to python server.
+        .then(response => response.json())          //Waits for response.
+        .then(serverData => {            //checks if backend successfully save the task without error.
             if (serverData.status === "success") {
-                // Read the database generated ID sent by the fixed server response
+                // Read the database generated ID sent by the fixed server response.
                 todoData.id = serverData.id;
                 todos.push(todoData);
-                localStorage.setItem("todos", JSON.stringify(todos));
+                localStorage.setItem("todos", JSON.stringify(todos));   //save task in localstorage in list.
                 DisplayTable();
             } else {
                 console.error("Server validation failed:", serverData.message);
