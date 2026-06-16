@@ -16,7 +16,7 @@ todos = []
 
 # Replace your current myclient block in app.py with this:
 myclient = MongoClient(
-    'mongodb+srv://rupalij_db_user:rupali2026@ac-cpcdrqx-shard-00-00.81fdwl0.mongodb.net/Todo_db?retryWrites=true&w=majority',
+    'mongodb+srv://rupalij_db_user:rupali%402025@cluster0.81fdwl0.mongodb.net/,
     tls=True,
     tlsCAFile=certifi.where()  # Uses the certifi library you already imported
 )                                                                 #It tells database where to find security certificate on your computer
